@@ -1,0 +1,113 @@
+{% extends "tools/base.html" %}
+{% load static %}
+{% block nav_home %}active{% endblock %}
+
+{% block content %}
+<div class="wrap">
+
+  <section class="hero hero-v2">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="badge badge-blue"><span class="dot dot-blue"></span> AI-Powered Resume Tools</span>
+        <h1>STOP GUESSING<br>START <span class="accent-blue">LANDING<br>INTERVIEWS!</span></h1>
+        <p>ResumeIQ scores, rewrites, and rebuilds your resume against real job descriptions — so recruiters and ATS bots see exactly what they're looking for.</p>
+        <div class="hero-cta-row">
+          <a href="{% url 'tools:get_started' %}" class="btn btn-blue">Get Started Free →</a>
+          <a href="#tools" class="btn btn-outline">See the Tools</a>
+        </div>
+        {% if not user.is_authenticated %}
+          <p class="hero-subnote">Free account required — takes 10 seconds.</p>
+        {% endif %}
+      </div>
+
+      <div class="hero-visual hero-visual-img" aria-hidden="true">
+        <img src="{% static 'tools/images/resume_hero_base.png' %}" alt="" class="hero-img hero-img-base">
+        <img src="{% static 'tools/images/resume_hero_card.png' %}" alt="" class="hero-img hero-img-card">
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-icon">▤</span>
+        <div class="hero-stat-copy"><span class="hero-stat-num">10K+</span><span class="hero-stat-label">Resumes Created</span></div>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-icon">◎</span>
+        <div class="hero-stat-copy"><span class="hero-stat-num">8K+</span><span class="hero-stat-label">Resumes Analysed</span></div>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-icon">◈</span>
+        <div class="hero-stat-copy"><span class="hero-stat-num">95%</span><span class="hero-stat-label">Success Rate</span></div>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-icon">★</span>
+        <div class="hero-stat-copy"><span class="hero-stat-num">4.9/5</span><span class="hero-stat-label">User Rating</span></div>
+      </div>
+    </div>
+  </section>
+
+  <p class="hero-lede">Whether you're starting from zero, checking how your current resume performs, or tailoring it to a specific job — we've got a tool built for exactly that. Pick one below to get started.</p>
+
+  <div id="tools" class="section-label"></div>
+
+  <div class="tool-cards">
+    <a href="{% url 'tools:resume_creator' %}" class="card tool-card">
+      <div class="card-top">
+        <div class="icon-box">✎</div>
+        <span class="card-link">↗</span>
+      </div>
+      <h3>Resume Creator</h3>
+      <p>Build a clean, ATS-friendly resume from a guided form.</p>
+    </a>
+
+    <a href="{% url 'tools:resume_analyser' %}" class="card tool-card">
+      <div class="card-top">
+        <div class="icon-box">◎</div>
+        <span class="card-link">↗</span>
+      </div>
+      <h3>Resume Analyser</h3>
+      <p>Upload your resume and get an instant section-by-section score.</p>
+    </a>
+
+    <a href="{% url 'tools:resume_optimizer' %}" class="card tool-card">
+      <div class="card-top">
+        <div class="icon-box">↗</div>
+        <span class="card-link">↗</span>
+      </div>
+      <h3>Resume Optimizer</h3>
+      <p>AI rewrites your wording, strengthens weak bullets, and tailors keywords to the role you want.</p>
+    </a>
+  </div>
+
+  <div class="ats-section">
+    <div class="ats-info">
+      <h3 class="ats-heading">What Is an ATS Score?</h3>
+      <p>Most companies run resumes through an Applicant Tracking System (ATS) before a human ever reads them. Your ATS Score estimates how well your resume will survive that first automated pass.</p>
+      <ul class="check-list">
+        <li><span class="mark-ok"></span>Standard section headers (Experience, Education, Skills) are detected correctly</li>
+        <li><span class="mark-ok"></span>Keywords are checked against the job description you're targeting</li>
+        <li><span class="mark-warn"></span>Dense paragraphs or missing bullet points get flagged</li>
+        <li><span class="mark-warn"></span>Tables, images, or multi-column layouts that ATS software can't parse are called out</li>
+      </ul>
+      <p>A score above 80 means your resume is in great shape for most ATS systems. Below that, it's worth tightening up formatting or adding a few missing keywords before you apply.</p>
+    </div>
+
+    <div class="ats-wheel-block">
+      <div class="score-ring-wrap">
+        <span class="score-ring-spin" aria-hidden="true"></span>
+        <svg class="score-ring" viewBox="0 0 160 160" width="160" height="160" aria-hidden="true">
+          <circle class="score-ring-track" cx="80" cy="80" r="70"></circle>
+          <circle class="score-ring-fill" cx="80" cy="80" r="70" data-score="78"></circle>
+        </svg>
+        <div class="score-ring-label">
+          <span class="score-num" data-target="78">0</span>
+        </div>
+      </div>
+      <div class="stat-row"><span>Word Count</span><span>412</span></div>
+      <div class="stat-row"><span>Sections Found</span><span>4 / 6</span></div>
+      <div class="stat-row"><span>Readability</span><span>Good</span></div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

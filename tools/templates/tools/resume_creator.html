@@ -1,0 +1,307 @@
+{% extends "tools/base.html" %}
+{% load static %}
+{% block title %}Resume Creator — ResumeIQ{% endblock %}
+{% block nav_tools %}active{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <div class="page-header no-print">
+    <h1>Resume Creator</h1>
+    <p>Build a clean, ATS-friendly resume from a guided form. Fill in as much or as little as you know — ResumeIQ will polish your wording and fill in the gaps so you still get a complete, one-page resume. Generate a preview, then print or save it as a PDF.</p>
+  </div>
+
+  <div class="tool-layout">
+    <div class="form-panel no-print">
+      <form method="post" id="creator-form">
+        {% csrf_token %}
+
+        <div class="field-row">
+          <div class="field">
+            <label for="full_name">Full Name</label>
+            <input type="text" id="full_name" name="full_name" required>
+          </div>
+          <div class="field">
+            <label for="job_title">Target Job Title</label>
+            <input type="text" id="job_title" name="job_title" placeholder="e.g. Frontend Developer">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="field">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="location">Location</label>
+            <input type="text" id="location" name="location" placeholder="City, Country">
+          </div>
+          <div class="field">
+            <label for="linkedin">LinkedIn / Portfolio URL</label>
+            <input type="text" id="linkedin" name="linkedin">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="summary">Professional Summary <span class="field-hint">(optional — leave blank and we'll write one for you)</span></label>
+          <textarea id="summary" name="summary" rows="3" placeholder="2-3 sentences summarizing your experience and strengths. Leave blank to auto-generate."></textarea>
+        </div>
+
+        <div class="field">
+          <label>Work Experience <span class="field-hint">(bullets optional — we'll add strong ones if you skip them)</span></label>
+          <div id="experience-list"></div>
+          <button type="button" class="btn btn-outline" id="add-experience" style="width:100%;">+ Add Experience</button>
+        </div>
+
+        <div class="field" style="margin-top:20px;">
+          <label>Education</label>
+          <div id="education-list"></div>
+          <button type="button" class="btn btn-outline" id="add-education" style="width:100%;">+ Add Education</button>
+        </div>
+
+        <div class="field" style="margin-top:20px;">
+          <label>Projects <span class="field-hint">(optional)</span></label>
+          <div id="project-list"></div>
+          <button type="button" class="btn btn-outline" id="add-project" style="width:100%;">+ Add Project</button>
+        </div>
+
+        <div class="field" style="margin-top:20px;">
+          <label for="skills">Skills (comma separated)</label>
+          <input type="text" id="skills" name="skills" placeholder="Python, Django, JavaScript, SQL">
+        </div>
+
+        <div class="field">
+          <label for="certifications">Certifications (comma separated, optional)</label>
+          <input type="text" id="certifications" name="certifications">
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="achievements">Achievements / Awards <span class="field-hint">(optional, comma separated)</span></label>
+            <input type="text" id="achievements" name="achievements" placeholder="Hackathon winner, Dean's list">
+          </div>
+          <div class="field">
+            <label for="languages">Languages <span class="field-hint">(optional, comma separated)</span></label>
+            <input type="text" id="languages" name="languages" placeholder="English, Hindi, Marathi">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="hobbies">Hobbies / Interests <span class="field-hint">(optional, comma separated)</span></label>
+            <input type="text" id="hobbies" name="hobbies" placeholder="Cricket, Reading, Chess">
+          </div>
+          <div class="field">
+            <label for="activities">Extra-curricular / Volunteering <span class="field-hint">(optional, one per line)</span></label>
+            <textarea id="activities" name="activities" rows="2" placeholder="Member of coding club&#10;Volunteered at college tech fest"></textarea>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Personal Details <span class="field-hint">(all optional — common on Indian resumes, skip anything you'd rather not share)</span></label>
+          <div class="field-row">
+            <div class="field">
+              <label for="dob" class="sub-label">Date of Birth</label>
+              <input type="text" id="dob" name="dob" placeholder="DD/MM/YYYY">
+            </div>
+            <div class="field">
+              <label for="gender" class="sub-label">Gender</label>
+              <input type="text" id="gender" name="gender">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="nationality" class="sub-label">Nationality</label>
+              <input type="text" id="nationality" name="nationality" placeholder="Indian">
+            </div>
+            <div class="field">
+              <label for="marital_status" class="sub-label">Marital Status</label>
+              <input type="text" id="marital_status" name="marital_status">
+            </div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field checkbox-field">
+            <label><input type="checkbox" name="include_references" checked> Add "References available upon request"</label>
+          </div>
+          <div class="field checkbox-field">
+            <label><input type="checkbox" id="include_declaration" name="include_declaration" checked> Add a declaration statement</label>
+          </div>
+        </div>
+        <div class="field" id="declaration-place-field">
+          <label for="declaration_place" class="sub-label">Place <span class="field-hint">(for the declaration line)</span></label>
+          <input type="text" id="declaration_place" name="declaration_place" placeholder="e.g. Jalgaon">
+        </div>
+
+        <div class="submit-row">
+          <button type="submit" class="btn btn-primary" style="width:100%;">Generate Resume</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="result-panel">
+      {% if submitted and resume %}
+        <div class="resume-preview" id="resume-output">
+          <div class="resume-header">
+            <h2>{{ resume.full_name|default:"Your Name" }}</h2>
+            {% if resume.job_title %}<div class="role">{{ resume.job_title }}</div>{% endif %}
+            <div class="contact-line">
+              {% if resume.email %}<span>{{ resume.email }}</span>{% endif %}
+              {% if resume.phone %}<span>{{ resume.phone }}</span>{% endif %}
+              {% if resume.location %}<span>{{ resume.location }}</span>{% endif %}
+              {% if resume.linkedin %}<span>{{ resume.linkedin }}</span>{% endif %}
+            </div>
+          </div>
+
+          {% if resume.summary %}
+            <div class="r-section">
+              <h4>Summary</h4>
+              <p>{{ resume.summary }}</p>
+            </div>
+          {% endif %}
+
+          {% if resume.skills %}
+            <div class="r-section">
+              <h4>Core Skills</h4>
+              <div class="skills-chips">{% for s in resume.skills %}<span class="chip">{{ s }}</span>{% endfor %}</div>
+            </div>
+          {% endif %}
+
+          {% if resume.strengths %}
+            <div class="r-section">
+              <h4>Key Strengths</h4>
+              <ul class="r-list two-col">{% for s in resume.strengths %}<li>{{ s }}</li>{% endfor %}</ul>
+            </div>
+          {% endif %}
+
+          {% if resume.experience %}
+            <div class="r-section">
+              <h4>Experience{% if resume.years_experience %} <span class="section-note">— {{ resume.years_experience }}+ yrs</span>{% endif %}</h4>
+              {% for job in resume.experience %}
+                <div class="entry">
+                  <div class="entry-head"><span>{{ job.title }}{% if job.company %} <em>— {{ job.company }}</em>{% endif %}</span><span class="entry-date">{{ job.duration }}</span></div>
+                  {% if job.bullets %}
+                    <ul class="r-list">{% for b in job.bullets %}<li>{{ b }}</li>{% endfor %}</ul>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {% if resume.projects %}
+            <div class="r-section">
+              <h4>Projects</h4>
+              {% for proj in resume.projects %}
+                <div class="entry">
+                  <div class="entry-head"><span>{{ proj.title }}{% if proj.tech %} <em>— {{ proj.tech|join:", " }}</em>{% endif %}</span></div>
+                  {% if proj.description %}<p class="entry-desc">{{ proj.description }}</p>{% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {% if resume.education %}
+            <div class="r-section">
+              <h4>Education</h4>
+              {% for edu in resume.education %}
+                <div class="entry">
+                  <div class="entry-head"><span>{{ edu.degree }}{% if edu.school %} <em>— {{ edu.school }}</em>{% endif %}</span><span class="entry-date">{{ edu.year }}</span></div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {% if resume.activities %}
+            <div class="r-section">
+              <h4>Extra-Curricular &amp; Volunteering</h4>
+              <ul class="r-list">{% for a in resume.activities %}<li>{{ a }}</li>{% endfor %}</ul>
+            </div>
+          {% endif %}
+
+          <div class="r-section-row">
+            {% if resume.certifications %}
+              <div class="r-section r-section-half">
+                <h4>Certifications</h4>
+                <div class="skills-line">{{ resume.certifications|join:" · " }}</div>
+              </div>
+            {% endif %}
+
+            {% if resume.achievements %}
+              <div class="r-section r-section-half">
+                <h4>Achievements</h4>
+                <div class="skills-line">{{ resume.achievements|join:" · " }}</div>
+              </div>
+            {% endif %}
+
+            {% if resume.languages %}
+              <div class="r-section r-section-half">
+                <h4>Languages</h4>
+                <div class="skills-line">{{ resume.languages|join:" · " }}</div>
+              </div>
+            {% endif %}
+
+            {% if resume.hobbies %}
+              <div class="r-section r-section-half">
+                <h4>Hobbies &amp; Interests</h4>
+                <div class="skills-line">{{ resume.hobbies|join:" · " }}</div>
+              </div>
+            {% endif %}
+          </div>
+
+          {% with pd=resume.personal_details %}
+            {% if pd.dob or pd.gender or pd.nationality or pd.marital_status %}
+              <div class="r-section">
+                <h4>Personal Details</h4>
+                <div class="skills-line">
+                  {% if pd.dob %}<span><strong>DOB:</strong> {{ pd.dob }}</span>{% endif %}
+                  {% if pd.gender %}<span><strong>Gender:</strong> {{ pd.gender }}</span>{% endif %}
+                  {% if pd.nationality %}<span><strong>Nationality:</strong> {{ pd.nationality }}</span>{% endif %}
+                  {% if pd.marital_status %}<span><strong>Marital Status:</strong> {{ pd.marital_status }}</span>{% endif %}
+                </div>
+              </div>
+            {% endif %}
+          {% endwith %}
+
+          {% if resume.include_references %}
+            <div class="r-section">
+              <p class="references-line">References available upon request.</p>
+            </div>
+          {% endif %}
+
+          {% if resume.declaration_text %}
+            <div class="r-section declaration-block">
+              <h4>Declaration</h4>
+              <p>{{ resume.declaration_text }}</p>
+              <div class="declaration-sign">
+                <span>{% if resume.declaration_place %}Place: {{ resume.declaration_place }}{% endif %}</span>
+                <span>Date: {% now "d/m/Y" %}</span>
+                <span>{{ resume.full_name }}</span>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="actions-row no-print">
+          <button class="btn btn-primary" onclick="window.print()">Download / Print PDF</button>
+        </div>
+      {% else %}
+        <div class="empty-state">
+          <div class="icon-box" style="margin:0 auto 18px;">✎</div>
+          Fill in the form and click "Generate Resume" to see a live preview here.
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'tools/js/creator.js' %}?v=1"></script>
+{% endblock %}

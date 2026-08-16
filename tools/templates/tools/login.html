@@ -1,0 +1,51 @@
+{% extends "tools/base.html" %}
+{% load socialaccount %}
+{% block title %}Log In — ResumeIQ{% endblock %}
+{% block nav_login %}active{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <div class="auth-shell">
+    <div class="form-panel auth-panel">
+      <div class="section-label" style="margin: 0 0 6px;">Welcome Back</div>
+      <h1 class="auth-title">Log In</h1>
+      <p class="field-hint" style="margin-bottom:24px;">New here? <a href="{% url 'tools:signup' %}" class="inline-link">Create an account</a></p>
+
+      {% if request.GET.next %}
+        <div class="flash-message flash-info" style="margin-bottom:20px;">Log in to continue and get started with ResumeIQ.</div>
+      {% endif %}
+
+      <a href="{% provider_login_url 'google' next=request.GET.next %}" class="btn btn-outline" style="width:100%; display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:18px;">
+        <img src="https://www.google.com/favicon.ico" alt="" style="width:16px; height:16px;">
+        Continue with Google
+      </a>
+      <div class="field-hint" style="text-align:center; margin-bottom:18px;">— or log in with your username —</div>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+
+        {% if form.non_field_errors %}
+          <div class="error-box">{{ form.non_field_errors.0 }}</div>
+        {% endif %}
+
+        <div class="field">
+          <label for="{{ form.username.id_for_label }}">Username</label>
+          {{ form.username }}
+          {% if form.username.errors %}<div class="field-error">{{ form.username.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div class="field">
+          <label for="{{ form.password.id_for_label }}">Password</label>
+          {{ form.password }}
+          {% if form.password.errors %}<div class="field-error">{{ form.password.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div class="submit-row">
+          <button type="submit" class="btn btn-primary" style="width:100%;">Log In</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

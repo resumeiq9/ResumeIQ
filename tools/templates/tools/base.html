@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}ResumeIQ — Stop Guessing, Start Landing Interviews{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'tools/css/style.css' %}?v=10">
+</head>
+<body>
+
+  <div class="wrap">
+    <nav class="navbar no-print">
+      <a href="{% url 'tools:home' %}" class="logo">RESUME<span>IQ</span></a>
+      <div class="nav-links">
+        <a href="{% url 'tools:home' %}" class="{% block nav_home %}{% endblock %}">Home</a>
+        <a href="{% url 'tools:tools_page' %}" class="{% block nav_tools %}{% endblock %}">Tools</a>
+        <a href="{% url 'tools:chatbot' %}" class="{% block nav_chatbot %}{% endblock %}">Chat Bot</a>
+        <a href="{% url 'tools:about' %}" class="{% block nav_about %}{% endblock %}">About</a>
+        <a href="{% url 'tools:contact' %}" class="{% block nav_contact %}{% endblock %}">Contact</a>
+      </div>
+      <div class="nav-actions">
+        {% if user.is_authenticated %}
+          <span class="user-chip">Hi, {{ user.username }}</span>
+          <a href="{% url 'tools:logout' %}" class="btn btn-outline">Log Out</a>
+        {% else %}
+          <a href="{% url 'tools:login' %}" class="login {% block nav_login %}{% endblock %}">Log In</a>
+          <a href="{% url 'tools:signup' %}" class="btn btn-primary {% block nav_signup %}{% endblock %}">Sign Up</a>
+        {% endif %}
+      </div>
+    </nav>
+  </div>
+
+  {% if messages %}
+    <div class="wrap no-print">
+      <div class="messages">
+        {% for message in messages %}
+          <div class="flash-message flash-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="no-print">
+    <div class="wrap">
+      <div class="footer-brand">RESUME<span>IQ</span></div>
+
+      <div class="footer-links">
+        <a href="{% url 'tools:home' %}">Home</a>
+        <a href="{% url 'tools:about' %}">About</a>
+        <a href="{% url 'tools:tools_page' %}">Tools</a>
+        <a href="{% url 'tools:contact' %}">Contact</a>
+      </div>
+
+      <div class="footer-meta">
+        <span>Email: resumeasistant7@gmail.com</span>
+        <span>Phone: +91 9403768329</span>
+        <span>Jalgaon, Maharashtra, India</span>
+      </div>
+
+      <div class="footer-stack">Python &bull; Django &bull; HTML &bull; CSS &bull; JS</div>
+
+      <div class="footer-bottom">&copy; 2026 ResumeIQ. Built with Django + vanilla JS.</div>
+    </div>
+  </footer>
+
+  <script src="{% static 'tools/js/main.js' %}?v=1"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

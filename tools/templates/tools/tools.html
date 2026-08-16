@@ -1,0 +1,110 @@
+{% extends "tools/base.html" %}
+{% block title %}Tools — ResumeIQ{% endblock %}
+{% block nav_tools %}active{% endblock %}
+
+{% block content %}
+<div class="wrap">
+
+  <div class="page-header">
+    <span class="badge badge-blue"><span class="dot dot-blue"></span> 3 Tools · 100% Free</span>
+    <h1>Resume Tools !</h1>
+    <p>Everything you need to go from blank page to interview-ready resume — pick the tool that matches where you're at, or run all three for a complete pass.</p>
+  </div>
+
+  <div class="zigzag">
+    <!-- Row 1: theory left, Resume Creator button right -->
+    <div class="zigzag-row">
+      <div class="zigzag-theory">
+        <h3>Resume Creator</h3>
+        <p>Starting with a blank page is the hardest part of any job search. The Resume Creator walks you through a guided, section-by-section form — personal details, work experience, education, and skills — and structures everything into a clean, ATS-friendly layout as you go. No formatting decisions, no guesswork about what recruiters expect to see, just a straight path from empty form to a resume you can actually submit.</p>
+      </div>
+      <div class="zigzag-action">
+        <div class="icon-box">✎</div>
+        <h4>Resume Creator</h4>
+        <a href="{% url 'tools:resume_creator' %}" class="btn btn-blue">Open Resume Creator →</a>
+      </div>
+    </div>
+
+    <!-- Row 2: Resume Analyser button left, theory right -->
+    <div class="zigzag-row reverse">
+      <div class="zigzag-action">
+        <div class="icon-box">◎</div>
+        <h4>Resume Analyser</h4>
+        <a href="{% url 'tools:resume_analyser' %}" class="btn btn-blue">Open Resume Analyser →</a>
+      </div>
+      <div class="zigzag-theory">
+        <h3>Resume Analyser</h3>
+        <p>Already have a resume but not sure how well it actually performs? The Resume Analyser scans it section by section and returns an instant score, flagging missing headers, dense paragraphs, or formatting that ATS software can't parse. It's the fastest way to get an honest baseline before you send your resume anywhere — so you know exactly what's working and what's quietly costing you interviews.</p>
+      </div>
+    </div>
+
+    <!-- Row 3: theory left, Resume Optimizer button right -->
+    <div class="zigzag-row">
+      <div class="zigzag-theory">
+        <h3>Resume Optimizer</h3>
+        <p>The Resume Optimizer rewrites your resume, not just scores it: it fixes spelling and punctuation, rewrites casual phrasing into professional language, strengthens weak achievement bullets, checks ATS formatting section-by-section, and tailors keywords to the job title (and job description, if you have one) you give it. It's built for the moment you're ready to send an application and want a genuinely stronger draft, not just a list of gaps.</p>
+      </div>
+      <div class="zigzag-action">
+        <div class="icon-box">↗</div>
+        <h4>Resume Optimizer</h4>
+        <a href="{% url 'tools:resume_optimizer' %}" class="btn btn-blue">Open Resume Optimizer →</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-label" style="margin-top: 70px;">Working -</div>
+
+  <div class="about-grid panel-focus-group" style="margin-top: 14px;">
+    <div class="panel">
+      <h3 class="panel-title">Pick Your Tool</h3>
+      <p>Not sure where to start? Use the guide below — it only takes a few seconds to figure out which of the three tools fits your situation right now.</p>
+    </div>
+    <div class="panel">
+      <h3 class="panel-title">Run It Instantly</h3>
+      <p>Fill in the guided form or upload your existing resume. Everything runs on our built-in scoring engine — no waiting on a third-party AI service.</p>
+    </div>
+    <div class="panel">
+      <h3 class="panel-title">Apply The Results</h3>
+      <p>Get your ATS score, missing keywords, and section-by-section feedback immediately, then download or copy your improved resume and apply with confidence.</p>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top: 70px;">Which Tool Fits You?</div>
+  <ul class="check-list" style="max-width: 720px; margin-top: 14px;">
+    <li><span class="mark-ok">✓</span> Never written a resume before, or starting completely over — use<strong>Resume Creator</strong></li>
+    <li><span class="mark-ok">✓</span> Already have a resume and want to know how strong it is — use<strong>Resume Analyser</strong></li>
+    <li><span class="mark-ok">✓</span> Applying to one specific job posting and want to match it closely — use<strong>Resume Optimizer</strong></li>
+  </ul>
+
+  <div class="section-label" style="margin-top: 70px;">FAQ !</div>
+  <div class="about-grid panel-focus-group" style="margin-top: 14px; grid-template-columns: 1fr 1fr;">
+    <div class="panel">
+      <h3 class="panel-title">Is it really free?</h3>
+      <p>Yes — all three tools are free to use, with no hidden limits on how many times you run them.</p>
+    </div>
+    <div class="panel">
+      <h3 class="panel-title">What file formats are supported?</h3>
+      <p>The Analyser and Optimizer accept standard resume uploads, and the Creator lets you export your finished resume when you're done.</p>
+    </div>
+    <div class="panel">
+      <h3 class="panel-title">Is my resume data stored anywhere?</h3>
+      <p>Your files are processed to generate your results and are not shared with third parties or used for anything beyond powering the tool you're using.</p>
+    </div>
+    <div class="panel">
+      <h3 class="panel-title">Do I need an account?</h3>
+      <p>You'll need a free account to save your progress and access your results across sessions — sign up takes about 10 seconds.</p>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top: 70px; margin-bottom: 70px; padding-top: 44px; text-align: center;">
+    <h3 class="panel-title" style="font-size: 1.6rem;">Still Not Sure Where To Start?</h3>
+    <p style="max-width: 560px; margin: 0 auto 22px;">If you're on the fence, the Resume Analyser is the fastest way to get a baseline — upload what you have and we'll tell you exactly what to fix first.</p>
+    <div class="hero-cta-row" style="justify-content: center;">
+      <a href="{% url 'tools:resume_analyser' %}" class="btn btn-blue">Analyse My Resume →</a>
+      <a href="#pick" class="btn btn-outline">See All Tools</a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

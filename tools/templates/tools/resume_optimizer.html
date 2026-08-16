@@ -1,0 +1,228 @@
+{% extends "tools/base.html" %}
+{% block title %}Resume Optimizer — ResumeIQ{% endblock %}
+{% block nav_tools %}active{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <div class="page-header no-print">
+    <h1>Resume Optimizer</h1>
+    <p>Upload your resume and tell ResumeIQ what role you're targeting — it fixes spelling and punctuation, rewrites weak phrasing, strengthens your achievement bullets, checks ATS formatting section-by-section, and hands you back a fully optimized resume as a downloadable PDF.</p>
+  </div>
+
+  <div class="tool-layout no-print">
+    <div class="form-panel">
+      <form method="post" enctype="multipart/form-data" id="optimizer-form">
+        {% csrf_token %}
+        <label class="upload-box" id="upload-box" for="resume_file">
+          <strong>Click to upload your resume</strong>
+          <span class="upload-hint">PDF, DOCX or TXT — max 5MB</span>
+          <div class="upload-filename" id="upload-filename"></div>
+        </label>
+        <input type="file" id="resume_file" name="resume_file" accept=".pdf,.docx,.txt" style="display:none" required>
+
+        <div class="field" style="margin-top:20px;">
+          <label for="target_job_title">Target Job Title</label>
+          <input type="text" id="target_job_title" name="target_job_title" placeholder="e.g. Frontend Developer" value="{{ request.POST.target_job_title }}" required>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="target_industry">Target Industry <span class="field-hint">(optional)</span></label>
+            <input type="text" id="target_industry" name="target_industry" placeholder="e.g. FinTech" value="{{ request.POST.target_industry }}">
+          </div>
+          <div class="field">
+            <label for="experience_level">Experience Level <span class="field-hint">(optional)</span></label>
+            <select id="experience_level" name="experience_level">
+              <option value="">Select…</option>
+              <option value="student" {% if request.POST.experience_level == 'student' %}selected{% endif %}>Student / Fresher</option>
+              <option value="entry" {% if request.POST.experience_level == 'entry' %}selected{% endif %}>Entry-level (0-2 yrs)</option>
+              <option value="mid" {% if request.POST.experience_level == 'mid' %}selected{% endif %}>Mid-level (2-5 yrs)</option>
+              <option value="senior" {% if request.POST.experience_level == 'senior' %}selected{% endif %}>Senior (5-10 yrs)</option>
+              <option value="leadership" {% if request.POST.experience_level == 'leadership' %}selected{% endif %}>Leadership / Executive</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="job_description">Job Description <span class="field-hint">(optional — sharpens keyword matching)</span></label>
+          <textarea id="job_description" name="job_description" rows="6" placeholder="Paste the job description here for a more precise keyword match...">{{ request.POST.job_description }}</textarea>
+        </div>
+
+        <div class="submit-row">
+          <button type="submit" class="btn btn-primary" style="width:100%;">Optimize My Resume</button>
+        </div>
+        <p class="field-hint">Nothing is stored — your file is processed in memory only for this request.</p>
+      </form>
+    </div>
+
+    <div class="result-panel">
+      {% if error %}
+        <div class="error-box">{{ error }}</div>
+      {% endif %}
+
+      {% if result %}
+        <span class="pill">{{ filename }}</span>
+
+        <div class="ats-wheel-block is-visible">
+          <div class="score-ring-wrap">
+            <span class="score-ring-spin" aria-hidden="true"></span>
+            <svg class="score-ring" viewBox="0 0 160 160" width="160" height="160" aria-hidden="true">
+              <circle class="score-ring-track" cx="80" cy="80" r="70"></circle>
+              <circle class="score-ring-fill" cx="80" cy="80" r="70" data-score="{{ result.ats_score }}"></circle>
+            </svg>
+            <div class="score-ring-label">
+              <span class="score-num" data-target="{{ result.ats_score }}">0</span>
+            </div>
+          </div>
+          <div class="stat-row"><span>ATS Formatting</span><span>{{ result.ats_score }}/100</span></div>
+          <div class="stat-row"><span>Keyword Match</span><span>{{ result.match_score }}%</span></div>
+          <div class="stat-row"><span>Spelling &amp; Punctuation Fixes</span><span>{{ result.spelling_fixes }}</span></div>
+          <div class="stat-row"><span>Phrasing Rewrites</span><span>{{ result.phrasing_rewrites }}</span></div>
+        </div>
+      {% elif not error %}
+        <div class="empty-state">
+          <div class="icon-box" style="margin:0 auto 18px;">↗</div>
+          Upload a resume and tell ResumeIQ the role you're targeting to get a fully optimized resume.
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if result %}
+  <div class="result-details-panel">
+    <div class="no-print">
+      <div class="result-section" style="margin-top:0; padding-top:0; border-top:none;">
+        <h2 class="result-title">What Actually Changed</h2>
+        <ul class="check-list dot-list">
+          {% for change in result.changes_summary %}
+            <li><span class="mark-dot"></span> {{ change }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="result-section">
+        <h2 class="result-title">Achievement Statement Improvements</h2>
+        {% if result.bullet_improvements %}
+          {% for item in result.bullet_improvements %}
+            <div class="before-after">
+              <div class="before-after-row before">
+                <span class="ba-label">Before</span>
+                <span class="ba-text">{{ item.original }}</span>
+              </div>
+              {% if item.improved %}
+                <div class="before-after-row after">
+                  <span class="ba-label">After</span>
+                  <span class="ba-text">{{ item.improved }}</span>
+                </div>
+              {% endif %}
+              {% if item.needs_detail %}
+                <p class="field-hint" style="margin-top:8px;">Tip: name the tools/tech you used and add a number (%, users, time saved) for the strongest version — e.g. "Developed a responsive college website using HTML, CSS and JavaScript."</p>
+              {% endif %}
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="field-hint">Your bullet points already open with strong action verbs and read well — nice work.</p>
+        {% endif %}
+      </div>
+
+      <div class="result-section">
+        <h2 class="result-title">Section-by-Section Optimization</h2>
+        <ul class="check-list dot-list">
+          {% for item in result.section_tips %}
+            <li><span class="mark-dot"></span> <strong>{{ item.section }}:</strong> {{ item.tip }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="result-section">
+        <h2 class="result-title">Keyword Match <span class="section-score">{{ result.match_score }}%</span></h2>
+        <p class="field-hint">
+          Matched against your {{ result.keyword_source }}{% if result.keyword_source == 'target role' %} ("{{ result.target_job_title }}"{% if result.target_industry %}, {{ result.target_industry }}{% endif %}) — paste a job description above for an even more precise match{% endif %}.
+        </p>
+        <div class="keyword-tags" style="margin-top:14px;">
+          {% for kw in result.matched %}<span class="tag tag-ok">{{ kw }}</span>{% empty %}<span class="field-hint">None yet.</span>{% endfor %}
+        </div>
+        {% if result.missing %}
+          <div style="margin-top:16px;">
+            <div class="entry-title">Missing — Add These To Close The Gap</div>
+            <div class="keyword-tags">
+              {% for kw in result.missing %}<span class="tag tag-missing">{{ kw }}</span>{% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="result-section">
+        <h2 class="result-title">ATS &amp; Formatting Check <span class="section-score">{{ result.ats_score }}/100</span></h2>
+        <ul class="check-list dot-list">
+          {% for label, ok in result.ats_checks %}
+            <li><span class="mark-dot"></span> {{ label }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="result-section print-resume-block">
+      <h2 class="result-title no-print">Your Optimized Resume</h2>
+      <p class="field-hint no-print" style="margin-bottom:16px;">Every fix above — spelling, phrasing, achievement bullets, and the targeted summary — is already applied below. Click "Download / Print PDF" to save it.</p>
+
+      <div class="resume-preview" id="optimized-resume-preview">
+        {% if result.print_sections.header %}
+          <div class="resume-header">
+            <h2>{{ result.print_sections.header.name }}</h2>
+            {% if result.print_sections.header.contact_lines %}
+              <div class="contact-line">
+                {% for line in result.print_sections.header.contact_lines %}<span>{{ line }}</span>{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% for section in result.print_sections.sections %}
+          <div class="r-section">
+            {% if section.heading %}<h4>{{ section.heading }}</h4>{% endif %}
+            {% for run in section.runs %}
+              {% if run.type == 'bullet' %}
+                <ul class="r-list">{% for line in run.items %}<li>{{ line }}</li>{% endfor %}</ul>
+              {% else %}
+                {% for line in run.items %}<p class="entry-desc">{{ line }}</p>{% endfor %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="actions-row no-print">
+        <button class="btn btn-primary" onclick="window.print()">Download / Print PDF</button>
+        <button type="button" class="btn btn-outline" id="copy-resume-btn">Copy Plain Text</button>
+      </div>
+      <textarea id="final-resume-text" class="no-print" style="position:absolute; left:-9999px; top:-9999px;">{{ result.final_resume }}</textarea>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const input = document.getElementById('resume_file');
+  const filenameBox = document.getElementById('upload-filename');
+  if (input) {
+    input.addEventListener('change', () => {
+      filenameBox.textContent = input.files.length ? input.files[0].name : '';
+    });
+  }
+
+  const copyBtn = document.getElementById('copy-resume-btn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      const textarea = document.getElementById('final-resume-text');
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        const original = copyBtn.textContent;
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => { copyBtn.textContent = original; }, 1500);
+      });
+    });
+  }
+</script>
+{% endblock %}

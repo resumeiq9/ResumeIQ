@@ -1,0 +1,46 @@
+{% extends "tools/base.html" %}
+{% load static %}
+{% block title %}Chat Bot — ResumeIQ{% endblock %}
+{% block nav_chatbot %}active{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <div class="page-header">
+    <span class="badge badge-blue"><span class="dot dot-blue"></span> Ask Anything</span>
+    <h1>Chat Bot</h1>
+    <p>Got a question about resumes, job hunting, studying, or interview prep? Ask away — I'm here to help.</p>
+    <p style="max-width: 780px;">This assistant runs on a lightweight, homegrown matching engine trained on real resume, job-search, study, and interview questions — no external AI API required. It reads what you type, matches it against dozens of topics even if you make a typo, and replies instantly with practical, specific advice rather than generic filler. Think of it as a quick-reference career and study coach built right into ResumeIQ: it won't get everything, but for the everyday questions students and job seekers actually ask, it's ready around the clock.</p>
+  </div>
+
+  <div class="chat-panel">
+    <div class="chat-window" id="chat-window">
+      <div class="chat-msg bot">
+        <div class="chat-avatar">IQ</div>
+        <div class="chat-bubble">Hey! I'm the ResumeIQ assistant. Ask me anything about resumes, job hunting, studying, or interview prep.</div>
+      </div>
+    </div>
+
+    <div class="chat-suggestions" id="chat-suggestions">
+      <button type="button" class="pill chat-suggestion">How do I make my resume ATS-friendly?</button>
+      <button type="button" class="pill chat-suggestion">Tips for a job interview?</button>
+      <button type="button" class="pill chat-suggestion">How should I study for exams?</button>
+      <button type="button" class="pill chat-suggestion">How do I negotiate salary?</button>
+    </div>
+
+    <form id="chat-form" class="chat-input-row" autocomplete="off" data-ask-url="{% url 'tools:chatbot_ask' %}">
+      {% csrf_token %}
+      <input type="text" id="chat-input" name="message" placeholder="Type your question..." maxlength="500" required>
+      <button type="submit" class="chat-send-btn" id="chat-send" aria-label="Send message">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'tools/js/chatbot.js' %}?v=1"></script>
+{% endblock %}

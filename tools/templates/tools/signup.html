@@ -1,0 +1,58 @@
+{% extends "tools/base.html" %}
+{% load socialaccount %}
+{% block title %}Sign Up — ResumeIQ{% endblock %}
+{% block nav_signup %}active{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <div class="auth-shell">
+    <div class="form-panel auth-panel">
+      <div class="section-label" style="margin: 0 0 6px;">Get Started</div>
+      <h1 class="auth-title">Create Your Account</h1>
+      <p class="field-hint" style="margin-bottom:24px;">Already have one? <a href="{% url 'tools:login' %}" class="inline-link">Log in</a></p>
+
+      <a href="{% provider_login_url 'google' %}" class="btn btn-outline" style="width:100%; display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:18px;">
+        <img src="https://www.google.com/favicon.ico" alt="" style="width:16px; height:16px;">
+        Continue with Google
+      </a>
+      <div class="field-hint" style="text-align:center; margin-bottom:18px;">— or sign up with a username —</div>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          <div class="error-box">{{ form.non_field_errors.0 }}</div>
+        {% endif %}
+
+        <div class="field">
+          <label for="{{ form.username.id_for_label }}">Username</label>
+          {{ form.username }}
+          {% if form.username.errors %}<div class="field-error">{{ form.username.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div class="field">
+          <label for="{{ form.email.id_for_label }}">Email</label>
+          {{ form.email }}
+          {% if form.email.errors %}<div class="field-error">{{ form.email.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="{{ form.password1.id_for_label }}">Password</label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}<div class="field-error">{{ form.password1.errors.0 }}</div>{% endif %}
+          </div>
+          <div class="field">
+            <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}<div class="field-error">{{ form.password2.errors.0 }}</div>{% endif %}
+          </div>
+        </div>
+
+        <div class="submit-row">
+          <button type="submit" class="btn btn-primary" style="width:100%;">Sign Up</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

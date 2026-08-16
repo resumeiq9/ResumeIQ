@@ -1,0 +1,136 @@
+{% extends "tools/base.html" %}
+{% block title %}Resume Analyser — ResumeIQ{% endblock %}
+{% block nav_tools %}active{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <div class="page-header">
+    <h1>Resume Analyser</h1>
+    <p>Upload your resume and get an instant, section-by-section breakdown of what's helping — and hurting — your chances with ATS software.</p>
+  </div>
+
+  <div class="tool-layout">
+    <div class="form-panel">
+      <form method="post" enctype="multipart/form-data" id="analyser-form">
+        {% csrf_token %}
+        <label class="upload-box" id="upload-box" for="resume_file">
+          <strong>Click to upload your resume</strong>
+          <span class="upload-hint">PDF, DOCX or TXT — max 5MB</span>
+          <div class="upload-filename" id="upload-filename"></div>
+        </label>
+        <input type="file" id="resume_file" name="resume_file" accept=".pdf,.docx,.txt" style="display:none" required>
+
+        <div class="submit-row">
+          <button type="submit" class="btn btn-primary" style="width:100%;">Analyse Resume</button>
+        </div>
+        <p class="field-hint">Nothing is stored — your file is processed in memory only for this request.</p>
+      </form>
+    </div>
+
+    <div class="result-panel">
+      {% if error %}
+        <div class="error-box">{{ error }}</div>
+      {% endif %}
+
+      {% if result %}
+        <span class="pill">{{ filename }}</span>
+
+        <div class="ats-wheel-block is-visible">
+          <div class="score-ring-wrap">
+            <span class="score-ring-spin" aria-hidden="true"></span>
+            <svg class="score-ring" viewBox="0 0 160 160" width="160" height="160" aria-hidden="true">
+              <circle class="score-ring-track" cx="80" cy="80" r="70"></circle>
+              <circle class="score-ring-fill" cx="80" cy="80" r="70" data-score="{{ result.score }}"></circle>
+            </svg>
+            <div class="score-ring-label">
+              <span class="score-num" data-target="{{ result.score }}">0</span>
+            </div>
+          </div>
+          <div class="stat-row"><span>Word Count</span><span>{{ result.word_count }}</span></div>
+          <div class="stat-row"><span>Sections Found</span><span>{{ result.sections_found }} / {{ result.total_sections }}</span></div>
+          <div class="stat-row"><span>Readability</span><span>{{ result.readability }}</span></div>
+        </div>
+      {% elif not error %}
+        <div class="empty-state">
+          <div class="icon-box" style="margin:0 auto 18px;">◎</div>
+          Upload a resume to see your ATS score and section breakdown here.
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if result %}
+  <div class="result-details-panel">
+    <div class="result-section" style="margin-top:0; padding-top:0; border-top:none;">
+      <h2 class="result-title">Keyword Match <span class="section-score">{{ result.keyword_match.score }}%</span></h2>
+      <div class="keyword-tags">
+        {% for kw in result.keyword_match.found %}<span class="tag tag-ok">{{ kw }}</span>{% empty %}<span class="field-hint">No common ATS keywords detected yet.</span>{% endfor %}
+      </div>
+      {% if result.keyword_match.missing %}
+        <p class="field-hint" style="margin-top:10px;">Consider adding, if relevant: {% for kw in result.keyword_match.missing %}{{ kw }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+      {% endif %}
+    </div>
+
+    <div class="result-section">
+      <h2 class="result-title">Content Quality <span class="section-score">{{ result.content_quality.score }}/100</span></h2>
+      <ul class="check-list dot-list">
+        {% for label, ok in result.content_quality.items %}
+          <li><span class="mark-dot"></span> {{ label }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="result-section">
+      <h2 class="result-title">Issues &amp; Errors</h2>
+      {% if result.issues %}
+        <ul class="check-list dot-list">
+          {% for issue in result.issues %}<li><span class="mark-dot"></span> {{ issue }}</li>{% endfor %}
+        </ul>
+      {% else %}
+        <p class="field-hint">No major issues found — nice work.</p>
+      {% endif %}
+    </div>
+
+    <div class="result-section">
+      <h2 class="result-title">ATS &amp; Formatting Check</h2>
+      <ul class="check-list dot-list">
+        {% for label, ok in result.formatting_checks %}
+          <li><span class="mark-dot"></span> {{ label }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="result-section">
+      <h2 class="result-title">Improvement Suggestions</h2>
+      {% if result.suggestions %}
+        <ul class="check-list dot-list">
+          {% for s in result.suggestions %}<li><span class="mark-dot"></span> {{ s }}</li>{% endfor %}
+        </ul>
+      {% else %}
+        <p class="field-hint">Great — no suggestions right now.</p>
+      {% endif %}
+    </div>
+
+    <div class="result-section">
+      <h2 class="result-title">AI Overall Review</h2>
+      <p class="overall-review">{{ result.overall_review }}</p>
+    </div>
+
+    <div class="analyser-cta">
+      <p>Want to tailor this resume to a specific job? The Resume Optimizer matches it against any job description and shows exactly what to add.</p>
+      <a href="{% url 'tools:resume_optimizer' %}" class="btn btn-primary">Try Resume Optimizer →</a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const input = document.getElementById('resume_file');
+  const filenameBox = document.getElementById('upload-filename');
+  input.addEventListener('change', () => {
+    filenameBox.textContent = input.files.length ? input.files[0].name : '';
+  });
+</script>
+{% endblock %}

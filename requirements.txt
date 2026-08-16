@@ -1,0 +1,8 @@
+Django>=4.2,<5.1
+python-docx>=1.1.0
+pypdf>=4.0.0
+django-allauth>=0.63,<1.0
+python-dotenv>=1.0
+requests>=2.31
+PyJWT>=2.8
+cryptography>=42.0

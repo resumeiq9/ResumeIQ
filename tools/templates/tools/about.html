@@ -1,0 +1,132 @@
+{% extends "tools/base.html" %}
+{% block title %}About — ResumeIQ{% endblock %}
+{% block nav_about %}active{% endblock %}
+
+{% block content %}
+<div class="wrap">
+
+  <div class="about-hero">
+    <span class="badge"><span class="dot"></span>About Us</span>
+    <h1>Smarter Resumes <span class="accent-blue">Better Opportunities !</span></h1>
+    <p>ResumeIQ is a free toolkit that helps you build, score, and tailor your resume — powered by a scoring engine built right into this app, with nothing sent to a third-party AI.</p>
+  </div>
+
+  <div class="section-block">
+    <h2>Why We Created ResumeIQ</h2>
+    <p>Most resumes never make it past the ATS bots that screen them before a human ever looks. We built ResumeIQ to close that gap — giving every job seeker free, instant access to the same signals recruiters and applicant tracking systems look for, without the guesswork.</p>
+  </div>
+
+  <div class="section-block">
+    <h2>Three Tools, One Goal</h2>
+    <div class="tool-cards" style="margin-top: 26px;">
+      <a href="{% url 'tools:resume_creator' %}" class="card">
+        <div class="card-top">
+          <div class="icon-box">✎</div>
+          <span class="card-link">↗</span>
+        </div>
+        <h3>Resume Creator</h3>
+        <p>Build a clean, ATS-friendly resume from a guided form — personal info, experience, education, and skills, all in one place.</p>
+      </a>
+
+      <a href="{% url 'tools:resume_analyser' %}" class="card">
+        <div class="card-top">
+          <div class="icon-box">◎</div>
+          <span class="card-link">↗</span>
+        </div>
+        <h3>Resume Analyzer</h3>
+        <p>Upload your resume and get an instant section-by-section score, plus a full ATS readability breakdown.</p>
+      </a>
+
+      <a href="{% url 'tools:resume_optimizer' %}" class="card">
+        <div class="card-top">
+          <div class="icon-box">↗</div>
+          <span class="card-link">↗</span>
+        </div>
+        <h3>Resume Optimizer</h3>
+        <p>AI rewrites weak wording, strengthens achievement bullets, and tailors keywords to your target role.</p>
+      </a>
+    </div>
+  </div>
+
+
+  <div class="section-block">
+    <h2>Making Resume Building Easier</h2>
+    <div class="panel" style="margin-top: 26px;">
+      <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; margin: 0;">Every tool runs on a lightweight Python scoring engine built directly into this Django app — parsing your resume, detecting sections, matching keywords against job descriptions, and scoring readability, all processed locally and never handed off to a third party. No sign-up required, no waiting on an external API — just instant, honest feedback so you can walk into your next application with confidence.</p>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h2>Three Simple Steps</h2>
+    <div class="steps-row">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h4>Create</h4>
+        <p>Fill out a guided form and generate a clean, ATS-friendly resume in minutes.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h4>Analyze</h4>
+        <p>Upload your resume and get an instant score across every section that matters.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h4>Improve</h4>
+        <p>Match against a real job description and close the gaps before you hit submit.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h2>Built For Every Stage of the Search</h2>
+    <div class="pill-row">
+      <span class="pill">Students</span>
+      <span class="pill">Graduates</span>
+      <span class="pill">Job Seekers</span>
+      <span class="pill">Career Changers</span>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <div class="section-label">Team -</div>
+    <h2>The People Behind ResumeIQ</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-name">Pranav Koli</div>
+        <div class="team-role">Developer</div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Gaurav Bhangale</div>
+        <div class="team-role">Developer</div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Jayesh Rathod</div>
+        <div class="team-role">Developer</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h2>Built With</h2>
+    <div class="pill-row">
+      <span class="pill">Python</span>
+      <span class="pill">Django</span>
+      <span class="pill">HTML</span>
+      <span class="pill">CSS</span>
+      <span class="pill">JavaScript</span>
+    </div>
+  </div>
+
+  <!-- GET IN TOUCH -->
+  <div class="section-block" style="margin-bottom: 80px;">
+    <div class="cta-panel">
+      <h3>Get In Touch</h3>
+      <p>Questions, feedback, or a bug to report? We'd love to hear from you.</p>
+      <a href="{% url 'tools:contact' %}" class="btn btn-primary">Contact Us</a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
