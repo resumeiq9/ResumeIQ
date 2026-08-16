@@ -6,3 +6,7 @@ python-dotenv>=1.0
 requests>=2.31
 PyJWT>=2.8
 cryptography>=42.0
+gunicorn>=22.0
+whitenoise>=6.6
+dj-database-url>=2.2
+psycopg2-binary>=2.9
