@@ -1,31 +1,38 @@
-{% extends "tools/base.html" %}
-{% block title %}Contact — ResumeIQ{% endblock %}
-{% block nav_contact %}active{% endblock %}
-
-{% block content %}
+{% extends "tools/base.html" %} {% block title %}Contact — ResumeIQ{% endblock
+%} {% block nav_contact %}active{% endblock %} {% block content %}
 <div class="wrap">
-
   <!-- CONTACT US -->
   <div class="about-hero">
     <span class="badge"><span class="dot"></span>Contact Us</span>
     <h1>We're Here to <span class="accent-blue">Help You Succeed !</span></h1>
-    <p>Have questions, feedback, or need help? Get in touch with the ResumeIQ team.</p>
+    <p>
+      Have questions, feedback, or need help? Get in touch with the ResumeIQ
+      team.
+    </p>
   </div>
 
   <div class="section-block">
     <h2>We're Here to Support You</h2>
-    <p>ResumeIQ helps students, graduates and job seekers create, analyze and improve their resumes using a built-in scoring engine — nothing sent to a third-party AI. If something isn't working the way it should — or you just want to say hi — we want to hear about it.</p>
+    <p>
+      ResumeIQ helps students, graduates and job seekers create, analyze and
+      improve their resumes using a built-in scoring engine — nothing sent to a
+      third-party AI. If something isn't working the way it should — or you just
+      want to say hi — we want to hear about it.
+    </p>
   </div>
 
   <div class="section-block">
     <h2>A Few Ways We Can Assist</h2>
-    <div class="tool-cards" style="margin-top: 26px;">
+    <div class="tool-cards" style="margin-top: 26px">
       <div class="card">
         <div class="card-top">
           <div class="icon-box">✎</div>
         </div>
         <h3>Resume Assistance</h3>
-        <p>Need help using the Creator, Analyzer, or Optimizer? We can walk you through it.</p>
+        <p>
+          Need help using the Creator, Analyzer, or Optimizer? We can walk you
+          through it.
+        </p>
       </div>
 
       <div class="card">
@@ -33,7 +40,10 @@
           <div class="icon-box">⚙</div>
         </div>
         <h3>Technical Support</h3>
-        <p>Ran into a bug or something not loading right? Let us know and we'll look into it.</p>
+        <p>
+          Ran into a bug or something not loading right? Let us know and we'll
+          look into it.
+        </p>
       </div>
 
       <div class="card">
@@ -41,7 +51,10 @@
           <div class="icon-box">✦</div>
         </div>
         <h3>Feedback &amp; Ideas</h3>
-        <p>Got a feature request or a suggestion? We'd love to hear how we can make ResumeIQ better.</p>
+        <p>
+          Got a feature request or a suggestion? We'd love to hear how we can
+          make ResumeIQ better.
+        </p>
       </div>
     </div>
   </div>
@@ -82,40 +95,50 @@
 
   <div class="section-block">
     <h2>Write To Us</h2>
-    <div class="form-panel" style="margin-top: 26px;">
+    <div class="form-panel" style="margin-top: 26px">
       <form method="post" novalidate id="contact-form">
-        {% csrf_token %}
-        {% if form.non_field_errors %}
-          <div class="error-box">{{ form.non_field_errors.0 }}</div>
+        {% csrf_token %} {% if form.non_field_errors %}
+        <div class="error-box">{{ form.non_field_errors.0 }}</div>
         {% endif %}
 
         <div class="field-row">
           <div class="field">
             <label for="{{ form.name.id_for_label }}">Full Name</label>
-            {{ form.name }}
-            {% if form.name.errors %}<div class="field-error">{{ form.name.errors.0 }}</div>{% endif %}
+            {{ form.name }} {% if form.name.errors %}
+            <div class="field-error">{{ form.name.errors.0 }}</div>
+            {% endif %}
           </div>
           <div class="field">
             <label for="{{ form.email.id_for_label }}">Email Address</label>
-            {{ form.email }}
-            {% if form.email.errors %}<div class="field-error">{{ form.email.errors.0 }}</div>{% endif %}
+            {{ form.email }} {% if form.email.errors %}
+            <div class="field-error">{{ form.email.errors.0 }}</div>
+            {% endif %}
           </div>
         </div>
 
         <div class="field">
           <label for="{{ form.subject.id_for_label }}">Subject</label>
-          {{ form.subject }}
-          {% if form.subject.errors %}<div class="field-error">{{ form.subject.errors.0 }}</div>{% endif %}
+          {{ form.subject }} {% if form.subject.errors %}
+          <div class="field-error">{{ form.subject.errors.0 }}</div>
+          {% endif %}
         </div>
 
         <div class="field">
           <label for="{{ form.message.id_for_label }}">Message</label>
-          {{ form.message }}
-          {% if form.message.errors %}<div class="field-error">{{ form.message.errors.0 }}</div>{% endif %}
+          {{ form.message }} {% if form.message.errors %}
+          <div class="field-error">{{ form.message.errors.0 }}</div>
+          {% endif %}
         </div>
 
         <div class="submit-row">
-          <button type="submit" class="btn btn-primary" id="contact-submit-btn" style="width:100%;">Send !</button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="contact-submit-btn"
+            style="width: 100%"
+          >
+            Send !
+          </button>
         </div>
       </form>
     </div>
@@ -125,16 +148,23 @@
     // Instant feedback that the click registered — the actual email send
     // happens server-side and can take a couple of seconds, so this avoids
     // the "did anything happen?" feeling while it's in flight.
-    document.getElementById('contact-form').addEventListener('submit', function () {
-      const btn = document.getElementById('contact-submit-btn');
-      btn.disabled = true;
-      btn.textContent = 'Sending…';
-    });
+    document
+      .getElementById("contact-form")
+      .addEventListener("submit", function () {
+        const btn = document.getElementById("contact-submit-btn");
+        btn.disabled = true;
+        btn.textContent = "Sending…";
+      });
   </script>
 
   <div class="section-block">
     <h2>Help Us Improve</h2>
-    <p>Your suggestions and feedback help us improve ResumeIQ and build better tools for students, graduates and job seekers. We encourage you to reach out with questions, technical issues, feature suggestions, or feedback about your ResumeIQ experience.</p>
+    <p>
+      Your suggestions and feedback help us improve ResumeIQ and build better
+      tools for students, graduates and job seekers. We encourage you to reach
+      out with questions, technical issues, feature suggestions, or feedback
+      about your ResumeIQ experience.
+    </p>
   </div>
 
   <div class="section-block">
@@ -142,38 +172,59 @@
     <div class="faq-list">
       <details class="faq-item">
         <summary>What is ResumeIQ?</summary>
-        <p>ResumeIQ is a free toolkit that helps you create, analyze, and optimize your resume — all processed locally with nothing sent to a third-party AI.</p>
+        <p>
+          ResumeIQ is a free toolkit that helps you create, analyze, and
+          optimize your resume — all processed locally with nothing sent to a
+          third-party AI.
+        </p>
       </details>
       <details class="faq-item">
         <summary>How does Resume Analyzer work?</summary>
-        <p>Upload your resume and our built-in scoring engine parses each section, checking structure, keywords, and readability to give you an instant score.</p>
+        <p>
+          Upload your resume and our built-in scoring engine parses each
+          section, checking structure, keywords, and readability to give you an
+          instant score.
+        </p>
       </details>
       <details class="faq-item">
         <summary>What is ATS?</summary>
-        <p>An Applicant Tracking System (ATS) is software recruiters use to scan and filter resumes before a human ever reviews them. ResumeIQ helps your resume get past that first screen.</p>
+        <p>
+          An Applicant Tracking System (ATS) is software recruiters use to scan
+          and filter resumes before a human ever reviews them. ResumeIQ helps
+          your resume get past that first screen.
+        </p>
       </details>
       <details class="faq-item">
         <summary>How can I create a resume?</summary>
-        <p>Head to the Resume Creator tool and fill in your details through the guided form — it generates a clean, ATS-friendly resume for you.</p>
+        <p>
+          Head to the Resume Creator tool and fill in your details through the
+          guided form — it generates a clean, ATS-friendly resume for you.
+        </p>
       </details>
       <details class="faq-item">
         <summary>How can I contact support?</summary>
-        <p>Use the form above, or reach us directly by email or phone using the contact details listed on this page.</p>
+        <p>
+          Use the form above, or reach us directly by email or phone using the
+          contact details listed on this page.
+        </p>
       </details>
     </div>
   </div>
 
   <!-- FINAL CTA -->
-  <div class="section-block" style="margin-bottom: 80px;">
+  <div class="section-block" style="margin-bottom: 80px">
     <div class="cta-panel">
       <h3>Ready To Improve Your Resume?</h3>
       <p>Create, analyze and optimize your resume with ResumeIQ.</p>
       <div class="cta-actions">
-        <a href="{% url 'tools:tools_page' %}" class="btn btn-outline">Explore Tools</a>
-        <a href="{% url 'tools:resume_creator' %}" class="btn btn-primary">Create Resume</a>
+        <a href="{% url 'tools:tools_page' %}" class="btn btn-outline"
+          >Explore Tools</a
+        >
+        <a href="{% url 'tools:resume_creator' %}" class="btn btn-primary"
+          >Create Resume</a
+        >
       </div>
     </div>
   </div>
-
 </div>
 {% endblock %}
